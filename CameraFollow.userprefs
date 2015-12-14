@@ -1,0 +1,13 @@
+﻿<Properties>
+  <MonoDevelop.Ide.Workspace />
+  <MonoDevelop.Ide.Workbench ActiveDocument="..\Pong3\Assets\Scripts\Player1.cs">
+    <Files>
+      <File FileName="..\Pong3\Assets\Scripts\Ball.cs" Line="61" Column="35" />
+      <File FileName="..\Pong3\Assets\Scripts\Player1.cs" Line="38" Column="47" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+</Properties>
