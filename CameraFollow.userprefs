@@ -1,0 +1,17 @@
+﻿<Properties>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Script\TeleportPac.cs">
+    <Files>
+      <File FileName="Assets\Script\TeleportPac.cs" Line="106" Column="4" />
+      <File FileName="Assets\Script\StopHisHead.cs" Line="1" Column="1" />
+      <File FileName="Assets\Script\MoveBox.cs" Line="5" Column="2" />
+      <File FileName="Assets\Script\Dash.cs" Line="33" Column="1" />
+      <File FileName="Assets\Script\PacGoesUpIfHeTouchStuff.cs" Line="1" Column="1" />
+      <File FileName="Assets\Script\DownWithPack.cs" Line="1" Column="1" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+</Properties>
