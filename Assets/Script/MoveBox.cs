@@ -8,14 +8,32 @@ public class MoveBox : MonoBehaviour {
 	public KeyCode downMovement;
 	public KeyCode rightMovement;
 	public KeyCode leftMovement;
+
 	public int moveSpeed;
 	public int direction;
-	int nextDirection;
+	public int nextDirection;
 
 
 	Vector3[] pacMoveDir;
+	public bool herculesMode;
 
-	//_________DrawRay && Real RayCast________
+	//_______ JUMP________ 
+
+//	public KeyCode jumpUp;
+//	bool jumpOkOrNot = false;
+//	bool jumpKeyPressed;
+//	public float timer4HowLongJump;
+//
+//	Vector3 pacPos;
+//	float x;
+//	float y;
+	//__________Dash___________________
+	public KeyCode dash = KeyCode.LeftShift;
+	public bool dashing;
+	public bool pressOnce = true;
+	public bool dashActivated = true;
+
+		//_________DrawRay && Real RayCast________
 
 	Vector3[] movement;
 	Vector3[] offset ;
@@ -29,6 +47,8 @@ public class MoveBox : MonoBehaviour {
 
 	Vector3[] vecDir;
 	Vector3[] offsetpush;
+
+
 
 
 	void Start () {
@@ -45,13 +65,15 @@ public class MoveBox : MonoBehaviour {
 	void Update () {
 	
 		//___________Trycka på en knapp?___________
-		if(Input.GetKeyDown(upMovement)){
+
+
+		if(Input.GetKey(upMovement) && !herculesMode){
 			nextDirection = 0;
-		}else if(Input.GetKeyDown(downMovement)){
+		}else if(Input.GetKey(downMovement) && !herculesMode){
 			nextDirection = 1;
-		}else if(Input.GetKeyDown(rightMovement)){
+		}else if(Input.GetKey(rightMovement)){
 			nextDirection = 2;
-		}else if(Input.GetKeyDown(leftMovement)){
+		}else if(Input.GetKey(leftMovement)){
 			nextDirection = 3;
 		}
 
@@ -61,7 +83,7 @@ public class MoveBox : MonoBehaviour {
 		if ( nextDirection != 4){
 			if (Physics.Raycast(transform.position + offset[nextDirection], movement[nextDirection], out hit, raycastLeangthForBool) ||
 			    Physics.Raycast(transform.position - offset[nextDirection], movement[nextDirection], out hit, raycastLeangthForBool)){
-				if(hit.collider.tag != "Wall"){
+				if((hit.collider.tag != "Wall")){
 					direction = nextDirection;
 					nextDirection = 4;
 				}
@@ -75,9 +97,37 @@ public class MoveBox : MonoBehaviour {
 		if ( Physics.Raycast(transform.position, movement[direction], out hit, raycastForStop) && hit.collider.tag == "Wall" ){
 				direction = 4;
 		}
+	
+		if ( Input.GetKeyDown(dash) && pressOnce && dashActivated){
+			StartCoroutine(DashTimer());
+		}
 	}
+
+
+	IEnumerator DashTimer(){
+		pressOnce = false;
+		dashing = true;
+		GetComponentInChildren<DownWithPack>().PacIsDashing();
+		yield return new WaitForSeconds(0.21f);
+		dashing = false;
+
+		GetComponentInChildren<DownWithPack>().PacStopedDashing();
+		yield return new WaitForSeconds(1f);
+		pressOnce = true; 
+	}
+	public void PacManActivatedDash(){
+		dashActivated = true;
+	}
+
+
 	void FixedUpdate (){
+
 		// ________________PacManMovement__________
+
+		if (herculesMode){
+			transform.position += transform.forward * Time.deltaTime * moveSpeed;
+		}
+
 
 		transform.position += pacMoveDir[direction] * Time.deltaTime * moveSpeed;
 
@@ -92,6 +142,51 @@ public class MoveBox : MonoBehaviour {
 				transform.position += vecDir[direction] * Time.deltaTime * moveSpeed;
 		
 		}
+
+		//______Dash__________________
+		if (dashing && !herculesMode){
+			transform.position += pacMoveDir[direction] * Time.deltaTime * moveSpeed * 2;
+		}
+		if (dashing && herculesMode){
+			transform.position += transform.forward * Time.deltaTime * moveSpeed * 4;
+		}
+
+
+	}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 		
 //
 //		//________________PacMoveFromTheWall
@@ -151,8 +246,6 @@ public class MoveBox : MonoBehaviour {
 //						Debug.DrawRay(transform.position + new Vector3(0,0,dictanceFromPac),-Vector3.right * raycastLeangthForBool, Color.red);
 //					}
 
-	}
-}
 
 
 
