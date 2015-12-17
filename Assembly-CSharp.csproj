@@ -45,10 +45,15 @@
 	</Reference>
   </ItemGroup>
   <ItemGroup>
-     <Compile Include="Assets\NyMovement.cs" />
      <Compile Include="Assets\Script\CameraFollow.cs" />
+     <Compile Include="Assets\Script\Dash.cs" />
+     <Compile Include="Assets\Script\DownWithPack.cs" />
      <Compile Include="Assets\Script\MoveBox.cs" />
+     <Compile Include="Assets\Script\PacGoesUpIfHeTouchStuff.cs" />
+     <Compile Include="Assets\Script\RotatePac.cs" />
+     <Compile Include="Assets\Script\StopHisHead.cs" />
      <Compile Include="Assets\Script\TaBortMus.cs" />
+     <Compile Include="Assets\Script\TeleportPac.cs" />
      <None Include="Assets\Tree1\ReadMe.txt" />
  <Reference Include="UnityEngine.UI">
  <HintPath>D:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
