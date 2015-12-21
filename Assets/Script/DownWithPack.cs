@@ -6,6 +6,8 @@ public class DownWithPack : MonoBehaviour {
 	//______________Gravity_____________
 	public bool pacDontTouchTheFloor = true;
 	public float moveSpeed;
+	int touchingAFloor;
+
 
 	//______________Jump_________________
 
@@ -15,8 +17,10 @@ public class DownWithPack : MonoBehaviour {
 
 	public float timer4HowLongJump;
 
-	public float x;
-	public float y = 0;
+	float x;
+	float y = 0;
+	public float jumpHeight;
+
 
 	public float rayLeangth;
 
@@ -50,15 +54,29 @@ public class DownWithPack : MonoBehaviour {
 	void OnTriggerEnter(Collider col){
 
 		if (col.gameObject.tag == "Wall"){
-			pacDontTouchTheFloor = false;
-			jumpKeyPressed = true;
-			x = 0;
+
+			touchingAFloor++;
+			if (touchingAFloor == 1) {
+				pacDontTouchTheFloor = false;
+				jumpKeyPressed = true;
+				x = 0;
+			}
+			
+
+
 		}
 	}
 	void OnTriggerExit(Collider col){
 
 		if (col.gameObject.tag == "Wall"){
-			pacDontTouchTheFloor = true;
+
+			touchingAFloor--;
+			if (touchingAFloor == 0)
+				{
+					pacDontTouchTheFloor = true;
+				}
+			
+
 		}
 	}
 
@@ -67,7 +85,7 @@ public class DownWithPack : MonoBehaviour {
 
 		if (jumpKeyPressed && !pacDontTouchTheFloor && pacCanNowJump){
 			if (Input.GetKeyDown(jumpUp)){
-					x = 7;	
+				x = jumpHeight;	
 			}
 		}
 
