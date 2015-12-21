@@ -25,6 +25,12 @@ public class DownWithPack : MonoBehaviour {
 	public bool pacCanNowJump = true;
 
 	bool pacDash = false;
+
+
+
+
+
+
 	// Use this for initialization
 	void Start () {
 
@@ -50,17 +56,24 @@ public class DownWithPack : MonoBehaviour {
 	void OnTriggerEnter(Collider col){
 
 		if (col.gameObject.tag == "Wall"){
-			pacDontTouchTheFloor = false;
-			jumpKeyPressed = true;
-			x = 0;
+
+		
+				pacDontTouchTheFloor = false;
+				jumpKeyPressed = true;
+				x = 0;
+
 		}
 	}
 	void OnTriggerExit(Collider col){
 
 		if (col.gameObject.tag == "Wall"){
+
+		
 			pacDontTouchTheFloor = true;
+
+			}
 		}
-	}
+
 
 	void Update(){
 
