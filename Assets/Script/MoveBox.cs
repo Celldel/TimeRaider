@@ -9,13 +9,14 @@ public class MoveBox : MonoBehaviour {
 	public KeyCode rightMovement;
 	public KeyCode leftMovement;
 
-	public int moveSpeed;
+	public float moveSpeed;
 	public int direction;
 	public int nextDirection;
 
 
 	Vector3[] pacMoveDir;
 	public bool herculesMode;
+	public bool pacManCantMove;
 
 	//_______ JUMP________ 
 
@@ -66,7 +67,6 @@ public class MoveBox : MonoBehaviour {
 	
 		//___________Trycka på en knapp?___________
 
-
 		if(Input.GetKey(upMovement) && !herculesMode){
 			nextDirection = 0;
 		}else if(Input.GetKey(downMovement) && !herculesMode){
@@ -76,27 +76,12 @@ public class MoveBox : MonoBehaviour {
 		}else if(Input.GetKey(leftMovement)){
 			nextDirection = 3;
 		}
-
 		//___________RayCast som sparar inputvärde______
 
 
-		if ( nextDirection != 4){
-			if (Physics.Raycast(transform.position + offset[nextDirection], movement[nextDirection], out hit, raycastLeangthForBool) ||
-			    Physics.Raycast(transform.position - offset[nextDirection], movement[nextDirection], out hit, raycastLeangthForBool)){
-				if((hit.collider.tag != "Wall")){
-					direction = nextDirection;
-					nextDirection = 4;
-				}
-			}else{ 
-				direction = nextDirection;
-				nextDirection = 4;
-			}
-		}
 		//_________________STOPPA_BOLLEN_GENOM_ATT_SÄTTA_DIRECTION_TILL_0__________________________
 	
-		if ( Physics.Raycast(transform.position, movement[direction], out hit, raycastForStop) && hit.collider.tag == "Wall" ){
-				direction = 4;
-		}
+
 	
 		if ( Input.GetKeyDown(dash) && pressOnce && dashActivated){
 			StartCoroutine(DashTimer());
@@ -123,31 +108,61 @@ public class MoveBox : MonoBehaviour {
 	void FixedUpdate (){
 
 		// ________________PacManMovement__________
+		if ( nextDirection != 4){
+			if (Physics.Raycast(transform.position + offset[nextDirection], movement[nextDirection], out hit, raycastLeangthForBool) ||
+			    Physics.Raycast(transform.position - offset[nextDirection], movement[nextDirection], out hit, raycastLeangthForBool)){
+				if((hit.collider.tag == "Wall")){
+				}
+				
+				else {
+					GetComponentInChildren<RotatePac>().EyPacMovedFromLocation();
+					direction = nextDirection;
+					nextDirection = 4;
+				}
+				
+				
+			}else{ 
+				GetComponentInChildren<RotatePac>().EyPacMovedFromLocation();
+				direction = nextDirection;
+				nextDirection = 4;
+			}
+		}
+
+		if ( Physics.Raycast(transform.position, movement[direction], out hit, raycastForStop) && hit.collider.tag == "Wall"){
+			pacManCantMove = true;
+		}
+		else{
+			pacManCantMove = false;
+		}
+
+
 
 		if (herculesMode){
 			transform.position += transform.forward * Time.deltaTime * moveSpeed;
 		}
 
-
-		transform.position += pacMoveDir[direction] * Time.deltaTime * moveSpeed;
+		if (!pacManCantMove && !herculesMode) {
+			transform.position += pacMoveDir[direction] * Time.deltaTime * moveSpeed;
+		}
+	
 
 		//_________________Raycast som flyttar Pac från vägg____________________
 
 
-		if (direction != 4 && Physics.Raycast(transform.position + offsetpush[direction], vecDir[direction], out hit, movePacFromWallLength) && hit.collider.tag == "Wall"){
+		if (Physics.Raycast(transform.position + offsetpush[direction], vecDir[direction], out hit, movePacFromWallLength) && hit.collider.tag == "Wall"){
 		
 				transform.position += -vecDir[direction] * Time.deltaTime * moveSpeed;
 		}
-		if (direction != 4 && Physics.Raycast(transform.position + offsetpush[direction], -vecDir[direction], out hit, movePacFromWallLength) && hit.collider.tag == "Wall"){
+		if (Physics.Raycast(transform.position + offsetpush[direction], -vecDir[direction], out hit, movePacFromWallLength) && hit.collider.tag == "Wall"){
 				transform.position += vecDir[direction] * Time.deltaTime * moveSpeed;
 		
 		}
 
 		//______Dash__________________
-		if (dashing && !herculesMode){
+		if (!pacManCantMove && dashing && !herculesMode){
 			transform.position += pacMoveDir[direction] * Time.deltaTime * moveSpeed * 2;
 		}
-		if (dashing && herculesMode){
+		if (!pacManCantMove && dashing && herculesMode){
 			transform.position += transform.forward * Time.deltaTime * moveSpeed * 4;
 		}
 
