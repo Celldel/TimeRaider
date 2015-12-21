@@ -9,13 +9,14 @@ public class MoveBox : MonoBehaviour {
 	public KeyCode rightMovement;
 	public KeyCode leftMovement;
 
-	public int moveSpeed;
+	public float moveSpeed;
 	public int direction;
 	public int nextDirection;
 
 
 	Vector3[] pacMoveDir;
 	public bool herculesMode;
+	public bool marioMode;
 
 	//_______ JUMP________ 
 
@@ -66,16 +67,28 @@ public class MoveBox : MonoBehaviour {
 	
 		//___________Trycka på en knapp?___________
 
+		if (!herculesMode || !marioMode) {
+			if (Input.GetKey (upMovement)) {
+				nextDirection = 0;
+			} else if (Input.GetKey (downMovement)) {
+				nextDirection = 1;
+			} else if (Input.GetKeyDown (rightMovement)) {
+				nextDirection = 2;
+			} else if (Input.GetKey (leftMovement)) {
+				nextDirection = 3;
+			}
+		} else {
+			if (Input.GetKey (rightMovement) && direction != 3) {
 
-		if(Input.GetKey(upMovement) && !herculesMode){
-			nextDirection = 0;
-		}else if(Input.GetKey(downMovement) && !herculesMode){
-			nextDirection = 1;
-		}else if(Input.GetKey(rightMovement)){
-			nextDirection = 2;
-		}else if(Input.GetKey(leftMovement)){
-			nextDirection = 3;
+				direction = 2;
+			} else if (Input.GetKey (leftMovement)) {
+				direction = 3;
+			} else if (herculesMode){
+				direction = 4;
+			}
 		}
+
+
 
 		//___________RayCast som sparar inputvärde______
 
@@ -83,7 +96,7 @@ public class MoveBox : MonoBehaviour {
 		if ( nextDirection != 4){
 			if (Physics.Raycast(transform.position + offset[nextDirection], movement[nextDirection], out hit, raycastLeangthForBool) ||
 			    Physics.Raycast(transform.position - offset[nextDirection], movement[nextDirection], out hit, raycastLeangthForBool)){
-				if((hit.collider.tag != "Wall")){
+				if(hit.collider.tag != "Wall"){
 					direction = nextDirection;
 					nextDirection = 4;
 				}
@@ -94,7 +107,7 @@ public class MoveBox : MonoBehaviour {
 		}
 		//_________________STOPPA_BOLLEN_GENOM_ATT_SÄTTA_DIRECTION_TILL_0__________________________
 	
-		if ( Physics.Raycast(transform.position, movement[direction], out hit, raycastForStop) && hit.collider.tag == "Wall" ){
+		if ( Physics.Raycast(transform.position, movement[direction], out hit, raycastForStop) && (hit.collider.tag == "Wall" || hit.collider.tag == "Enemy")){
 				direction = 4;
 		}
 	
