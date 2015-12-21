@@ -3,20 +3,13 @@ using System.Collections;
 
 public class RotatePac : MonoBehaviour {
 
-
-
-
-	public int rotateDirection;
-	Vector3[] lookAtDir;
-
-	void Start ()
-	{
-		lookAtDir = new Vector3[] {Vector3.forward,-Vector3.forward,Vector3.right,-Vector3.right};
+	// Use this for initialization
+	void Start () {
+	
 	}
-	public void EyPacMovedFromLocation() 
-	{
-		rotateDirection = GetComponentInParent<MoveBox>().direction;
-				transform.LookAt(lookAtDir[rotateDirection]);
-
+	
+	// Update is called once per frame
+	void Update () {
+	
 	}
 }
